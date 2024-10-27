@@ -1,0 +1,56 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false  
+      - ELASTIC_PASSWORD=mypass 
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+
+
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+
+    volumes:
+      - kibana:/usr/share/kibana/data
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=mypass  
+      - xpack.security.enabled=true
+      - xpack.security.encryptionKey="something_at_least_32_characters"  
+
+
+
+  fluentd:
+    image: govtechsg/fluentd-elasticsearch:latest
+    container_name: fluentd
+    build:
+      context: ./fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    volumes:
+      - ./fluentd/fluent.conf:/fluentd/etc/fluent.conf
+      - ./fluentd/logs:/fluentd/logs
+
+    environment:
+      - ELASTIC_HOST=elasticsearch
+      - ELASTIC_PORT=9200
+      - ELASTIC_USER=elastic  # Пользователь для авторизации в Elasticsearch
+      - ELASTIC_PASSWORD=mypass  # Пароль пользователя
+volumes:
+  elastic:
+    driver: local
+  kibana:
+    driver: local

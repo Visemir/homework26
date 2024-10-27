@@ -1,0 +1,10 @@
+services:
+  homework26:
+    build:
+      context: .  # Указывает на текущую директорию, где лежит Dockerfile
+      dockerfile: Dockerfile
+    container_name: homework26_container
+    ports:
+      - "3000:3000"  # Замените на нужный порт, если приложение слушает на другом
+    environment:
+      - FLUENT_HOST=192.168.234.160  # Пример переменной окружения
