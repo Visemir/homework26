@@ -47,8 +47,8 @@ services:
     environment:
       - ELASTIC_HOST=elasticsearch
       - ELASTIC_PORT=9200
-      - ELASTIC_USER=elastic  # Пользователь для авторизации в Elasticsearch
-      - ELASTIC_PASSWORD=mypass  # Пароль пользователя
+      - ELASTIC_USER=elastic  
+      - ELASTIC_PASSWORD=mypass  
 volumes:
   elastic:
     driver: local
