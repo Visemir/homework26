@@ -1,4 +1,4 @@
-Prepare ![docker compose](monitoring/docker-compose.yaml) file to run EFK.
+Prepare [docker compose](monitoring/docker-compose.yaml) file to run EFK.
 
 It should gather logs from this node app.
 
